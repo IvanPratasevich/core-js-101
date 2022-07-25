@@ -6,7 +6,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Parses a rfc2822 string date representation into date value
  * For rfc2822 date specification refer to : http://tools.ietf.org/html/rfc2822#page-14
@@ -38,7 +37,6 @@ function parseDataFromIso8601(value) {
   return new Date(value);
 }
 
-
 /**
  * Returns true if specified date is leap year and false otherwise
  * Please find algorithm here: https://en.wikipedia.org/wiki/Leap_year#Algorithm
@@ -57,7 +55,6 @@ function isLeapYear(date) {
   return new Date(date.getFullYear(), 1, 29).getDate() === 29;
 }
 
-
 /**
  * Returns the string representation of the timespan between two dates.
  * The format of output string is "HH:mm:ss.sss"
@@ -73,10 +70,14 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  const difference = endDate - startDate;
+  const output = new Date(difference)
+    .toISOString()
+    .split('T')[1]
+    .replace(/[a-z]/gi, '');
+  return output;
 }
-
 
 /**
  * Returns the angle (in radians) between the hands of an analog clock
@@ -94,10 +95,15 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  const angle = Math.abs(
+    0.5 * ((60 * (date.getUTCHours() % 12)) - 11 * date.getUTCMinutes()),
+  );
+  if (angle > 180) {
+    return (Math.PI * (360 - angle)) / 180;
+  }
+  return (Math.PI * angle) / 180;
 }
-
 
 module.exports = {
   parseDataFromRfc2822,
