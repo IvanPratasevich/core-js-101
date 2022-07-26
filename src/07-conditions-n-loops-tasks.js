@@ -515,8 +515,34 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+
+const getWinner = (params) => {
+  const { sign, matrix, length } = params;
+  let winner = '';
+  if (sign === matrix[0][0] && sign === matrix[1][1] && sign === matrix[2][2]) {
+    winner += sign;
+  }
+
+  if (sign === matrix[0][2] && sign === matrix[1][1] && sign === matrix[2][0]) {
+    winner += sign;
+  }
+
+  for (let i = 0; i < length; i += 1) {
+    if (sign === matrix[i][0] && sign === matrix[i][2] && sign === matrix[i][1]) {
+      winner += sign;
+    }
+  }
+
+  for (let j = 0; j < length; j += 1) {
+    if (sign === matrix[0][j] && sign === matrix[2][j] && sign === matrix[1][j]) {
+      winner += sign;
+    }
+  }
+  return winner === '' ? undefined : winner;
+};
+
+function evaluateTicTacToePosition(position) {
+  return getWinner({ sign: 'X', matrix: position, length: position.length }) || getWinner({ sign: '0', matrix: position, length: position.length });
 }
 
 module.exports = {
